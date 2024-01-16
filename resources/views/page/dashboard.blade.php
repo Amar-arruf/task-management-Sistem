@@ -10,7 +10,6 @@
     <div class="w-full h-[250px] p-3 bg-white rounded-lg mb-3">
       <a href="#">
         <div class="flex gap-5 items-center">
-          <img class="rounded-full w-7 h-7" src="{{asset('img/google.png')}}" alt="logo pemberi tugas">
           <div>
             <h6 class="m-0 p-0 text-base font-bold tracking-tight text-black dark:text-white">Google</h6>
             <span class="inline-block text-slate-400 text-xs">Google.inc</span>
@@ -27,7 +26,7 @@
         <span class="py-1 px-2 bg-[#fecdd3] text-[#e11d48] uppercase font-bold rounded-lg border-2 border-[#fda4af] text-[10px]">high priority</span>
       </div>
       <span class=" block mb-0 font-bold text-[13px] text-slate-500 px-2 py-3">Task Done: 25 / 30</span>
-      <div class="w-full bg-gray-200 rounded-full h-1.5 mb-2 dark:bg-gray-700 mb-1">
+      <div class="w-full bg-gray-200 rounded-full h-1.5 mb-2 dark:bg-gray-700 ">
         <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 95%"></div>
       </div>
       <div class="flex gap-3 items-center  my-3 ">
@@ -40,7 +39,6 @@
     <div class="w-full h-[250px] p-3 bg-white rounded-lg mb-3">
       <a href="#">
         <div class="flex gap-5 items-center">
-          <img class="rounded-full w-7 h-7" src="{{asset('img/logo_slack.png')}}" alt="logo pemberi tugas">
           <div>
             <h6 class=" m-0 p-0 text-base font-bold tracking-tight text-black dark:text-white">Slack</h6>
             <span class="block text-slate-400 text-xs">Slack Corporation</span>
