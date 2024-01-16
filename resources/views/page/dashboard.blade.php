@@ -6,13 +6,13 @@
 <div class="flex gap-5 justify-between">
   <!-- project  -->
   <div class="md:flex md:flex-col w-full">
-    <!-- google -->
+    @foreach ($tasks as $task)
     <div class="w-full h-[250px] p-3 bg-white rounded-lg mb-3">
       <a href="#">
         <div class="flex gap-5 items-center">
           <div>
-            <h6 class="m-0 p-0 text-base font-bold tracking-tight text-black dark:text-white">Google</h6>
-            <span class="inline-block text-slate-400 text-xs">Google.inc</span>
+            <h6 class="m-0 p-0 text-base font-bold tracking-tight text-black dark:text-white">{{$task->pemberi_tugas}}</h6>
+            <span class="inline-block text-slate-400 text-xs">{{$task->pemberi_tugas}}</span>
           </div>
           <div class="ms-auto">
             <svg class="w-6 h-6 text-yellow-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
@@ -22,48 +22,41 @@
         </div>
       </a>
       <div class="flex items-center justify-between mt-2 mb-2">
-        <span class="py-1 px-2 bg-gray-200 text-[10px] font-bold uppercase rounded-lg text-slate-500">on progress</span>
+        <span class="py-1 px-2 bg-gray-200 text-[10px] font-bold uppercase rounded-lg text-slate-500">{{$task->status}}</span>
         <span class="py-1 px-2 bg-[#fecdd3] text-[#e11d48] uppercase font-bold rounded-lg border-2 border-[#fda4af] text-[10px]">high priority</span>
       </div>
-      <span class=" block mb-0 font-bold text-[13px] text-slate-500 px-2 py-3">Task Done: 25 / 30</span>
+      <span class=" block mb-0 font-bold text-[13px] text-slate-500 px-2 py-3">
+        Task Done: {{
+          collect($todos)->filter(function ($item) use ($task) {
+                return ($item['id_todo'] == $task->id_todo) && ($item['completed'] == 'true');
+            })->count()
+        }} / {{
+          collect($todos)->where('id_todo', $task->id_todo)->count()
+        }}
+      </span>
       <div class="w-full bg-gray-200 rounded-full h-1.5 mb-2 dark:bg-gray-700 ">
-        <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 95%"></div>
+        @php
+        $completedCount = collect($todos)->filter(function ($item) use ($task) {
+        return ($item['id_todo'] == $task->id_todo) && ($item['completed'] == 'true');
+        })->count();
+
+        $totalCount = collect($todos)->where('id_todo', $task->id_todo)->count();
+
+        $completionPercentage = ($totalCount > 0) ? ($completedCount / $totalCount) * 100 : 0;
+        @endphp
+        <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: <?= $completedCount; ?>%"></div>
       </div>
       <div class="flex gap-3 items-center  my-3 ">
-        <span class="py-1 px-2 bg-[#a7f3d0] text-[12px] font-bold  rounded-lg text-[#059669]">app</span>
-        <span class="py-1 px-2 bg-blue-200 text-blue-800 font-bold rounded-lg text-[12px]">ios</span>
+        <span class="py-1 px-2 bg-[#a7f3d0] text-[12px] font-bold  rounded-lg text-[#059669]">
+          @php
+          $selectedCategory = collect($kategori)->firstWhere('id_kategori', $task->id_kategori);
+          echo $selectedCategory ? $selectedCategory->nama_kategori : 'null';
+          @endphp
+        </span>
       </div>
-      <span class="py-1 px-2 bg-[#fecdd3] text-[#e11d48] uppercase font-bold rounded-lg border-2 border-[#fda4af] text-[10px]">due Date: 30 Dec</span>
+      <span class="py-1 px-2 bg-[#fecdd3] text-[#e11d48] uppercase font-bold rounded-lg border-2 border-[#fda4af] text-[10px]">due Date: {{\Carbon\Carbon::parse($task->date)->format('d M Y')}}</span>
     </div>
-    <!-- slack -->
-    <div class="w-full h-[250px] p-3 bg-white rounded-lg mb-3">
-      <a href="#">
-        <div class="flex gap-5 items-center">
-          <div>
-            <h6 class=" m-0 p-0 text-base font-bold tracking-tight text-black dark:text-white">Slack</h6>
-            <span class="block text-slate-400 text-xs">Slack Corporation</span>
-          </div>
-          <div class="ms-auto">
-            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11.479 1.712 2.367 4.8a.532.532 0 0 0 .4.292l5.294.769a.534.534 0 0 1 .3.91l-3.83 3.735a.534.534 0 0 0-.154.473l.9 5.272a.535.535 0 0 1-.775.563l-4.734-2.49a.536.536 0 0 0-.5 0l-4.73 2.487a.534.534 0 0 1-.775-.563l.9-5.272a.534.534 0 0 0-.154-.473L2.158 8.48a.534.534 0 0 1 .3-.911l5.294-.77a.532.532 0 0 0 .4-.292l2.367-4.8a.534.534 0 0 1 .96.004Z" />
-            </svg>
-          </div>
-        </div>
-      </a>
-      <div class="flex items-center justify-between mt-2 mb-2">
-        <span class="py-1 px-2 bg-green-200 text-[10px] font-bold uppercase rounded-lg text-green-800">completed</span>
-        <span class="py-1 px-2 bg-yellow-200 text-yellow-700 uppercase font-bold rounded-lg border-2 border-yellow-700 text-[10px]">normal</span>
-      </div>
-      <span class=" block mb-0 font-bold text-[13px] text-slate-500 px-2 py-3">Task Done: 50 / 50</span>
-      <div class="w-full bg-gray-200 rounded-full h-1.5 mb-2 dark:bg-gray-700">
-        <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 100%"></div>
-      </div>
-      <div class="flex gap-3 items-center my-3">
-        <span class="py-1 px-2 bg-[#a7f3d0] text-[12px] font-bold  rounded-lg text-[#059669]">app</span>
-        <span class="py-1 px-2 bg-blue-200 text-blue-800 font-bold rounded-lg text-[12px]">ios</span>
-      </div>
-      <span class="py-1 px-2 bg-[#fecdd3] text-[#e11d48] uppercase font-bold rounded-lg border-2 border-[#fda4af] text-[10px]">due Date: 30 Dec</span>
-    </div>
+    @endforeach
   </div>
   <!-- Task -->
   <div class=" md:flex md:flex-col w-full">
@@ -73,57 +66,23 @@
         <span class="inline-blocks ps-2 text-base font-bold">My Task</span>
       </a>
       <div class="mt-2">
+        @foreach($todos as $todo)
         <div class="flex gap-8 items-center justify-between p-2 border-b-2 border-gray-200">
-          <span class="inline-block font-bold text-xs text-slate-400">01</span>
-          <span class="inline-block font-bold text-xs text-slate-400">create wirerame</span>
+          <span class="inline-block font-bold text-xs text-slate-400">0 {{$loop->iteration}}</span>
+          <span class="inline-block font-bold text-xs text-slate-400">{{$todo->deskripsi}}</span>
           <div class="ms-auto">
             <svg class="w-6 h-6 text-slate-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 10 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
           </div>
         </div>
-        <div class="flex gap-8 items-center justify-between p-2 border-b-2 border-gray-200">
-          <span class="inline-block font-bold text-xs text-slate-400">02</span>
-          <span class="inline-block font-bold text-xs text-slate-400">design figma</span>
-          <div class="ms-auto">
-            <svg class="w-6 h-6 text-slate-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 10 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-          </div>
-        </div>
-        <div class="flex gap-8 items-center justify-between p-2 border-b-2 border-gray-200">
-          <span class="inline-block font-bold text-xs text-slate-400">03</span>
-          <span class="inline-block font-bold text-xs text-slate-400">coding</span>
-          <div class="ms-auto">
-            <svg class="w-6 h-6 text-slate-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 10 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-          </div>
-        </div>
-        <div class="flex gap-8 items-center justify-between p-2 border-b-2 border-gray-200">
-          <span class="inline-block font-bold text-xs text-slate-400">04</span>
-          <span class="inline-block font-bold text-xs text-slate-400">fixing bug</span>
-          <div class="ms-auto">
-            <svg class="w-6 h-6 text-green-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-            </svg>
-          </div>
-        </div>
-        <div class="flex gap-8 items-center justify-between p-2 border-b-2 border-gray-200">
-          <span class="inline-block font-bold text-xs text-slate-400">05</span>
-          <span class="inline-block font-bold text-xs text-slate-400">debugging</span>
-          <div class="ms-auto">
-            <svg class="w-6 h-6 text-green-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-            </svg>
-          </div>
-        </div>
+        @endforeach
       </div>
     </div>
     <!-- task management -->
     <div class="w-full bg-white rounded-lg mb-3">
       <div class="mt-1">
-        <h6 class="text-[13px] ps-2 py-2 font-bold mb-2">Google</h6>
+        <h6 class="text-[13px] ps-2 py-2 font-bold mb-2">task management</h6>
         <div class="flex gap-8 items-center p-2 pe-2 bg-red-100 border-l-2 border-orange-custom">
           <svg class="w-3 h-3 text-orange-custom dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />

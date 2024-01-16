@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\page\ProjectController;
 use App\Http\Controllers\Page\ScheduleController;
 use App\Http\Controllers\Page\TugasController;
@@ -20,9 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('page.dashboard');
-});
+Route::get('/', [DashboardController::class, 'index']);
 
 Route::get('/project', [ProjectController::class, 'index']);
 Route::get('/task', [TugasController::class, 'index']);
