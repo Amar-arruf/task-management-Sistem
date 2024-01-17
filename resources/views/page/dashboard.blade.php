@@ -14,9 +14,9 @@
             <h6 class="m-0 p-0 text-base font-bold tracking-tight text-black dark:text-white">{{$task->pemberi_tugas}}</h6>
             <span class="inline-block text-slate-400 text-xs">{{$task->pemberi_tugas}}</span>
           </div>
-          <div class="ms-auto">
-            <svg class="w-6 h-6 text-yellow-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-              <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+            <div class="ms-auto priority">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white prioritas-toggle" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20" onclick="Toggle_Priority(this)">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11.479 1.712 2.367 4.8a.532.532 0 0 0 .4.292l5.294.769a.534.534 0 0 1 .3.91l-3.83 3.735a.534.534 0 0 0-.154.473l.9 5.272a.535.535 0 0 1-.775.563l-4.734-2.49a.536.536 0 0 0-.5 0l-4.73 2.487a.534.534 0 0 1-.775-.563l.9-5.272a.534.534 0 0 0-.154-.473L2.158 8.48a.534.534 0 0 1 .3-.911l5.294-.77a.532.532 0 0 0 .4-.292l2.367-4.8a.534.534 0 0 1 .96.004Z"/>
             </svg>
           </div>
         </div>
@@ -149,6 +149,74 @@
     dropShadow: 'none',
     layoutModifiers: ['month-left-align']
   })
+</script>
+<script>
+  let toggle = false;
+  let elemenAktif = null;
+  
+  const Toggle_Priority = (el) => {
+    // jika toggle true 
+    if (el === elemenAktif) {
+    // Jika elemen yang aktif diklik lagi, maka nonaktifkan
+      el.textContent = '';
+      el.setAttribute('class','w-6 h-6 text-gray-800 prioritas-toggle');
+      el.setAttribute('aria-hidden', 'true');
+      el.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      el.setAttribute('fill','none');
+      el.setAttribute('viewBox', '0 0 22 20');
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+      path.setAttribute('stroke', 'currentColor');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-linejoin', 'round');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('d', 'M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575');
+      el.appendChild(path)
+      elemenAktif = null;
+      toggle = false
+  } else {
+    // Nonaktifkan elemen yang aktif sebelumnya
+    if (elemenAktif) {
+      elemenAktif.textContent = '';
+      elemenAktif.setAttribute('class','w-6 h-6 text-gray-800 prioritas-toggle');
+      elemenAktif.setAttribute('aria-hidden', 'true');
+      elemenAktif.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      elemenAktif.setAttribute('fill','none');
+      elemenAktif.setAttribute('viewBox', '0 0 22 20');
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+      path.setAttribute('stroke', 'currentColor');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-linejoin', 'round');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('d', 'M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575');
+      elemenAktif.appendChild(path)
+      toggle = false;
+    }
+  
+    // Aktifkan elemen yang baru diklik
+    elemenAktif = el;
+
+    toggle = true;
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', toggle ? 'w-6 h-6 text-yellow-300 dark:text-white prioritas-toggle' : 'w-6 h-6 text-gray-800 prioritas-toggle');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    svg.setAttribute('fill', toggle ? 'currentColor' : 'none');
+    svg.setAttribute('viewBox', '0 0 22 20');
+
+    const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    path.setAttribute('stroke', 'currentColor');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('d', 'M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575');
+
+    svg.appendChild(path);
+    el.appendChild(svg);
+  }
+}
 </script>
 
 @endsection
