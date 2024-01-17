@@ -10,5 +10,5 @@ class Todo extends Model
     protected $table = 'todos';
     protected $primaryKey = 'id_todo';
     public $timestamps = false;
-    protected $fillable = ['deskripsi'];
+    protected $fillable = ['deskripsi','completed'];
 }

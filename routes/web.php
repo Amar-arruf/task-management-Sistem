@@ -50,3 +50,4 @@ Route::delete('/task-delete/{id} ', [TaskController::class, 'hapus_data_Task']);
 
 //Todo
 Route::resource('todos', TodoController::class);
+Route::patch('update-todo/{id}', [TodoController::class,'update_completed']);

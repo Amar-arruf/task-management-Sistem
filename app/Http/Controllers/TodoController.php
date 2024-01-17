@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Tests\Feature\TodoHttpTest;
 
 class TodoController extends Controller
 {
@@ -75,6 +76,15 @@ class TodoController extends Controller
                 'deskripsi' => $request->input('deskripsi')
             ]);
         return redirect('/task');
+    }
+
+    public function update_completed(Request $request,string $id)
+    {   
+        $data = $request->json()->all();
+        $todo = Todo::findOrFail($id);
+
+        $todo->update($data);
+        return "status berhasil di update dengan ID" . $id;
     }
 
     /**
