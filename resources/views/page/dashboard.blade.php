@@ -87,46 +87,23 @@
     <!-- task management -->
     <div class="w-full bg-white rounded-lg mb-3">
       <div class="mt-1">
-        <h6 class="text-[13px] ps-2 py-2 font-bold mb-2">task management</h6>
-        <div class="flex gap-8 items-center p-2 pe-2 bg-red-100 border-l-2 border-orange-custom">
-          <svg class="w-3 h-3 text-orange-custom dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-          </svg>
-          <span class="inline-block font-bold grow text-xs text-slate-500">create wirerame</span>
-          <span class="inline-block ms-auto font-bold text-sm text-black-900">25m 02s</span>
-          <div class="ms-auto">
-            <svg class="w-4 h-4 text-orange-custom dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 12 16">
-              <path d="M3 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm7 0H9a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Z" />
-            </svg>
-          </div>
-        </div>
+        <h6 class="text-[13px] ps-2 py-2 font-bold mb-2">pomodoro</h6>
       </div>
       <div class="mt-2">
-        <h6 class="text-[13px] ps-2 py-2 font-bold mb-2">Slack</h6>
+        @foreach ($todos as $todo)
         <div class="flex gap-8 items-center justify-between p-2 mb-2 border-b-2 border-gray-200">
           <svg class="w-3 h-3 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
             <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>
-          <span class="inline-block font-bold grow text-xs text-slate-500">coding</span>
-          <span class="inline-block font-bold ms-auto text-sm text-black-900">01h 30m 00s</span>
+          <span class="inline-block font-bold grow text-xs text-slate-500">{{$todo->deskripsi}}</span>
+          <span class="inline-block font-bold ms-auto text-sm text-black-900 timer">25m 00s</span>
           <div class="ms-auto">
-            <svg class="w-6 h-6 text-slate-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <svg class="w-6 h-6 text-slate-400 dark:text-white toggle-play-pause" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v6m4-6v6m7-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
           </div>
         </div>
-        <div class="flex gap-8 items-center justify-between p-2 mb-2 border-b-2 border-gray-200">
-          <svg class="w-3 h-3 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-          </svg>
-          <span class="inline-block font-bold grow text-xs text-slate-500">fixing bug</span>
-          <span class="inline-block font-bold ms-auto text-sm text-black-900">01h 30m 00s</span>
-          <div class="ms-auto">
-            <svg class="w-6 h-6 text-slate-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v6m4-6v6m7-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-          </div>
-        </div>
+        @endforeach
       </div>
     </div>
   </div>
@@ -280,6 +257,63 @@
     });
   })
 
+  const timer = document.querySelectorAll('.timer');
+  const togglePlayPause = document.querySelectorAll(".toggle-play-pause");
+  let isRunning = false;
+  let timeInterval ;
+
+  function displayTimer(el,min,sec) {
+    let formated = `${PadZero(min)}m  ${PadZero(sec)}s`;
+    el.textContent = formated;
+  }
+
+  function PadZero(value) {
+    return value < 10 ? '0'+value: value;
+  }
+
+  function updateTimer(min,sec, elementTimer) {
+    return function () {
+      if (min === 0 && sec === 0) {
+        clearInterval(timeInterval);
+        isRunning = false;
+        alert("waktu habis")
+      } else {
+        if (sec === 0) {
+          min--;
+          sec = 60
+        }
+        sec--;
+        displayTimer(elementTimer, min, sec);
+      }
+    }
+  }
+
+  function playAndPauseTimer(el) {
+    // dapatkan timer
+    let timer = el.textContent.split(/\s+/);
+    let [minute, second] = timer;
+    minute =  Number(minute.replace(/[m]/,''));
+    second =  Number(second.replace(/[s]/,''));
+
+    if (!isRunning) {
+      timeInterval = setInterval(updateTimer(minute,second,el),1000)
+      isRunning= true;
+    } else {
+      clearInterval(timeInterval);
+      isRunning = false;
+    }
+  }
+
+  togglePlayPause.forEach((btnStrPause,index) => {
+    btnStrPause.addEventListener('click', () => {
+      playAndPauseTimer(timer[index]);
+      if (isRunning) {
+        btnStrPause.setAttribute('class', 'w-6 h-6 text-orange-custom dark:text-white toggle-play-pause');
+      } else {
+        btnStrPause.setAttribute('class', 'w-6 h-6 text-slate-400 dark:text-white toggle-play-pause')
+      }
+    })
+  })
 
 </script>
 
