@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -21,7 +21,7 @@ class UserController extends Controller
 
   public function tambah_user(Request $req)
   {
-    $password_hash = password_hash($req->post('password'), PASSWORD_DEFAULT);
+    $password_hash = Hash::make($req->post('password'));
 
     $user = User::create([
       'nama' => $req->post('nama'),

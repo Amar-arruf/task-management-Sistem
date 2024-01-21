@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\loginController;
 use App\Http\Controllers\page\ProjectController;
 use App\Http\Controllers\Page\ScheduleController;
 use App\Http\Controllers\Page\TugasController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskKategoriController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,8 +23,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DashboardController::class, 'index']);
 
+Route::get('/', [loginController::class, 'index'])->name("login");
+Route::post('/authenticate', [loginController::class, 'authenticate'])->name('auth');
+
+Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/project', [ProjectController::class, 'index']);
 Route::get('/task', [TugasController::class, 'index']);
 Route::resource('schedules', ScheduleController::class);
