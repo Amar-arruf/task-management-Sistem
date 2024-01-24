@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [loginController::class, 'index'])->name("login");
 Route::post('/authenticate', [loginController::class, 'authenticate'])->name('auth');
+Route::get('/logout', [loginController::class,'logout'])->name('logout');
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/project', [ProjectController::class, 'index']);
