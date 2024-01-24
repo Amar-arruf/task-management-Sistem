@@ -28,32 +28,32 @@ Route::get('/', [loginController::class, 'index'])->name("login");
 Route::post('/authenticate', [loginController::class, 'authenticate'])->name('auth');
 Route::get('/logout', [loginController::class,'logout'])->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/project', [ProjectController::class, 'index']);
-Route::get('/task', [TugasController::class, 'index']);
-Route::resource('schedules', ScheduleController::class);
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('authCheck');
+Route::get('/project', [ProjectController::class, 'index'])->middleware('authCheck');
+Route::get('/task', [TugasController::class, 'index'])->middleware('authCheck');
+Route::resource('schedules', ScheduleController::class)->middleware('authCheck');
 
 // user
-Route::post('/user-create', [UserController::class, 'tambah_user']);
-Route::get('/user-getuser/{id}', [UserController::class, 'mendapatkan_data_user']);
-Route::patch('/user-edit/{id}', [UserController::class, 'edit_user']);
-Route::delete('/user-delete/{id}', [UserController::class, 'hapus_user']);
+Route::post('/user-create', [UserController::class, 'tambah_user'])->middleware('authCheck');
+Route::get('/user-getuser/{id}', [UserController::class, 'mendapatkan_data_user'])->middleware('authCheck');
+Route::patch('/user-edit/{id}', [UserController::class, 'edit_user'])->middleware('authCheck');
+Route::delete('/user-delete/{id}', [UserController::class, 'hapus_user'])->middleware('authCheck');
 
 //task Kategory
-Route::post('/task-kategori-create', [TaskKategoriController::class, 'tambah_data_kategori']);
-Route::get('/task-kategoris', [TaskKategoriController::class, 'mendapatkan_data_kategori']);
-Route::patch('/task-kategori-edit/{id}', [TaskKategoriController::class, 'edit_task_kategori']);
-Route::delete('/task-kategori-delete/{id}', [TaskKategoriController::class, 'hapus_data_kategori']);
+Route::post('/task-kategori-create', [TaskKategoriController::class, 'tambah_data_kategori'])->middleware('authCheck');
+Route::get('/task-kategoris', [TaskKategoriController::class, 'mendapatkan_data_kategori'])->middleware('authCheck');
+Route::patch('/task-kategori-edit/{id}', [TaskKategoriController::class, 'edit_task_kategori'])->middleware('authCheck');
+Route::delete('/task-kategori-delete/{id}', [TaskKategoriController::class, 'hapus_data_kategori'])->middleware('authCheck');
 
 //Task
-Route::post('/task-create', [TaskController::class, 'menambahkan_data_task']);
-Route::get('/task/{id}', [TaskController::class, 'mengambil_data_task']);
-Route::get('/form-task-edit/{id}', [TaskController::class, 'form_edit']);
-Route::patch('/task-update-status', [TaskController::class, 'update_status']);
-Route::patch('/task-edit/{id}', [TaskController::class, 'edit_data_task']);
-Route::delete('/task-delete/{id} ', [TaskController::class, 'hapus_data_Task']);
+Route::post('/task-create', [TaskController::class, 'menambahkan_data_task'])->middleware('authCheck');
+Route::get('/task/{id}', [TaskController::class, 'mengambil_data_task'])->middleware('authCheck');
+Route::get('/form-task-edit/{id}', [TaskController::class, 'form_edit'])->middleware('authCheck');
+Route::patch('/task-update-status', [TaskController::class, 'update_status'])->middleware('authCheck');
+Route::patch('/task-edit/{id}', [TaskController::class, 'edit_data_task'])->middleware('authCheck');
+Route::delete('/task-delete/{id} ', [TaskController::class, 'hapus_data_Task'])->middleware('authCheck');
 
 
 //Todo
-Route::resource('todos', TodoController::class);
-Route::patch('update-todo/{id}', [TodoController::class,'update_completed']);
+Route::resource('todos', TodoController::class)->middleware('authCheck');
+Route::patch('update-todo/{id}', [TodoController::class,'update_completed'])->middleware('authCheck');
